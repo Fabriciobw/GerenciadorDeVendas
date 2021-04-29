@@ -1,20 +1,20 @@
-package view;
+package br.aplication;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import model.Evento;
-import model.Ingresso;
-import model.Local;
+import br.model.Evento;
+import br.model.Ingresso;
+import br.model.Local;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
-		int proximaPosicao = 0;
-		int tamanho = -1;
-		
-		Evento []array = new Evento[100];
+	
+		List<Evento> list = new ArrayList<Evento>();
 		Scanner menu = new Scanner (System.in);
 		boolean condicao = true;
 		
@@ -39,24 +39,24 @@ public class Program {
 		
 		case 1:
 			try {
-			if(tamanho == -1) {System.out.println("Crie um novo evento para continuar!");break;}
+			if(list.size() == 0) {System.out.println("Crie um novo evento para continuar!");break;}
 			
 			System.out.println("Escolha qual evento deseja setar o valor do ingresso: ");
 			
 			
-			for(int i = 0; i<=tamanho; i++) {
+			for (Evento evento : list) {
 				
-				System.out.println("Digite: "+ i + " para o evento: " + array[i].getNome());
-				
-			}
+				System.out.println("Digite: "+ list.indexOf(evento) + " para o evento: " + evento.getNome());
 			
+			}
+		
 
 			int opcaoEvento = menu.nextInt();
 
-			if(array[opcaoEvento] == null) { System.out.println("Selecione um evento válido ou crie um novo evento!");break;}
+			if(list.get(opcaoEvento) == null) { System.out.println("Selecione um evento válido ou crie um novo evento!");break;}
 				System.out.println("Digite o valor do ingresso: ");
 				float valor = menu.nextFloat();		
-				array[opcaoEvento].setIngresso(new Ingresso(valor));		
+				list.get(opcaoEvento).setIngresso(new Ingresso(valor));		
 				break;
 			} catch (NullPointerException e) {
 
@@ -65,19 +65,19 @@ public class Program {
 			}
 		case 2:
 			try {	
-			if(tamanho == -1) {System.out.println("Crie um novo evento para continuar!");break;}
+			if(list.size() == 0) {System.out.println("Crie um novo evento para continuar!");break;}
 			System.out.println("Escolha qual evento deseja setar o local: ");
 			
 			
-				for(int i = 0; i<=tamanho; i++) {
+				for(Evento a : list) {
 				
-				System.out.println("Digite: "+ i + " para setar o local do evento: " + array[i].getNome());
-				
-			}
+				System.out.println("Digite: "+ list.indexOf(a) + " para setar o local do evento: " + a.getNome());
 			
+			}
+		
 			
 			int opcaoLocal = menu.nextInt();
-			if(array[opcaoLocal] == null) { System.out.println("Selecione um evento válido ou crie um novo evento!");break;}	
+			if(list.get(opcaoLocal) == null) { System.out.println("Selecione um evento válido ou crie um novo evento!");break;}	
 			
 				menu.nextLine();
 				Local local = new Local();
@@ -88,7 +88,7 @@ public class Program {
 				local.setCapacidade(capacidade);
 				local.setEndereco(endereco);
 				
-				array[opcaoLocal].setLocal(local);
+				list.get(opcaoLocal).setLocal(local);
 
 			}catch(NullPointerException e) {
 
@@ -112,16 +112,8 @@ public class Program {
 			System.out.println("Pressione enter para confirmar");
 			menu.nextLine();
 			
-	
-			for(int i=0; i<array.length; i++) {
-				if( i ==  proximaPosicao ) {
-				array[i] =evento;
-				
-			}
-			}
+			list.add(evento);
 			
-			proximaPosicao++;
-			tamanho++;
 			}catch(NullPointerException e) {
 
 				System.out.println("Erro no processamento, verifique se todos os requisitos estão sendo satisfeitos!");
@@ -134,21 +126,21 @@ public class Program {
 			
 			
 			try {
-			if(tamanho == -1) {System.out.println("Crie um novo evento para continuar!");break;}
+			if(list.size() == 0) {System.out.println("Crie um novo evento para continuar!");break;}
 			System.out.println("Eventos disponíveis: ");
 			System.out.println("Só aparecerão eventos cujos locais e ingressos estão definidos");
 			
-			for(int i = 0; i<=tamanho; i++) {
-	
-				if(array[i].getIngresso() == null && array[i].getLocal()==null) {
+			for(Evento b : list) {
+		
+				if(b.getIngresso() == null && b.getLocal()==null) {
 					continue;		
 				}
-				else if(array[i].getIngresso().getQuantidadeVendida() < array[i].getLocal().getCapacidade()) {
-					System.out.println(array[i]);
+				else if(b.getIngresso().getQuantidadeVendida() < b.getLocal().getCapacidade()) {
+					System.out.println(b);
 				}else {
 					System.out.println("Não há eventos disponíveis");	
 				}
-				
+	
 				}
 			}catch(NullPointerException e) {
 
@@ -162,34 +154,36 @@ public class Program {
 		case 5:
 			
 			
-			if(tamanho == -1) {System.out.println("Crie um novo evento para continuar!");break;}
+			if(list.size() == 0) {System.out.println("Crie um novo evento para continuar!");break;}
 			boolean validarErro = false;
 			System.out.println("Eventos disponíveis para compra de ingressos: ");
 			System.out.println("Só aparecerão eventos cujos locais e ingressos estiverem definidos");
-			for(int i = 0; i<=tamanho; i++) {
-				
-				if(array[i].getIngresso() == null || array[i].getLocal()==null) {
+			for(Evento c : list) {
+			
+				if(c.getIngresso() == null || c.getLocal()==null) {
 					continue;
-				}else if(array[i].getIngresso().getQuantidadeVendida() < array[i].getLocal().getCapacidade()) {
-					System.out.println("Digite " + i + " para comprar um ingresso no evento: " + array[i]);
+				}else if(c.getIngresso().getQuantidadeVendida() < c.getLocal().getCapacidade()) {
+					System.out.println("Digite " + list.indexOf(c) + " para comprar um ingresso no evento: " + c);
 					validarErro = true;
 					
 				}
+				
 				}
 	
 			
 				try {
+					
 					if(validarErro) {
 				System.out.println("Digite uma opção: ");
 				int option = menu.nextInt();
 				
-				int disponivel = array[option].getLocal().getCapacidade()-array[option].getIngresso().getQuantidadeVendida();
-				array[option].getIngresso().setQuantidadeDisponivel(disponivel);
+				int disponivel = list.get(option).getLocal().getCapacidade()-list.get(option).getIngresso().getQuantidadeVendida();
+				list.get(option).getIngresso().setQuantidadeDisponivel(disponivel);
 				System.out.println("Digite a quantidade de ingressos que deseja comprar: ");
 				int quantidade = menu.nextInt();
 				
-				if(quantidade<= array[option].getIngresso().getQuantidadeDisponivel()) {
-					array[option].getIngresso().setQuantidadeVendida(quantidade);
+				if(quantidade<= list.get(option).getIngresso().getQuantidadeDisponivel()) {
+					list.get(option).getIngresso().setQuantidadeVendida(quantidade);
 				}
 				}else {
 					System.out.println("Não há eventos disponíveis");
@@ -207,14 +201,14 @@ public class Program {
 		case 6:
 				
 			try {
-			if(tamanho == -1) {System.out.println("Crie um novo evento para continuar!");break;}
+			if(list.size() == 0) {System.out.println("Crie um novo evento para continuar!");break;}
 				float total = 0;
 
-				for(int i = 0; i<=tamanho; i++) {
-					if(array[i].getIngresso() == null && array[i].getLocal()==null) {
+				for(Evento d : list) {
+					if(d.getIngresso() == null && d.getLocal()==null) {
 						continue;
 			}
-				total += (array[i].getIngresso().getValor() * array[i].getIngresso().getQuantidadeVendida());
+				total += (d.getIngresso().getValor() * d.getIngresso().getQuantidadeVendida());
 			
 				}
 				System.out.println("Valor total da compra: R$" + total + " reais");
